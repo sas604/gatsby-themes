@@ -4,5 +4,8 @@
   "main": "index.js",
   "author": "Aleksandr Tagunov",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "mkdirp": "^1.0.4"
+  }
 }
