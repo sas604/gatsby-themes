@@ -1,0 +1,8 @@
+{
+  "name": "gatsby-theme-docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Aleksandr Tagunov",
+  "license": "MIT",
+  "private": false
+}
