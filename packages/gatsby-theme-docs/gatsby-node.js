@@ -31,8 +31,11 @@ type DocsPage implements Node @dontInfer {
 
 exports.onCreateNode = ({ node, actions, getNode, createNodeId }, options) => {
   console.log('do nodes');
+
   const { basePath } = withDefaults(options);
+
   const parent = getNode(node.parent);
+
   // Only work on MDX files that were loaded by this them
   if (
     node.internal.type !== 'Mdx' ||
@@ -43,12 +46,19 @@ exports.onCreateNode = ({ node, actions, getNode, createNodeId }, options) => {
 
   // make sure that I have index.mdx
   const pageName = parent.name !== 'index' ? parent.name : '';
-
+  console.log(parent.relativeDirectory);
+  console.log(
+    path
+      .join('/', basePath, parent.relativeDirectory, pageName)
+      .replace(/\\/g, '/'),
+  );
   actions.createNode({
     id: createNodeId(`DocsPage-${node.id}`),
     title: node.frontmatter.title || parent.name,
     updated: parent.modifiedTime,
-    path: path.join(`/`, basePath, parent.relativeDirectory, pageName),
+    path: path
+      .join('/', basePath, parent.relativeDirectory, pageName)
+      .replace(/\\/g, '/'),
     parent: node.id,
     internal: {
       type: 'DocsPage',
@@ -76,5 +86,33 @@ exports.createResolvers = ({ createResolvers }) => {
         },
       },
     },
+  });
+};
+
+exports.createPages = async ({ actions, graphql, reporter }) => {
+  const result = await graphql(`
+    query {
+      allDocsPage {
+        nodes {
+          id
+          path
+        }
+      }
+    }
+  `);
+  if (result.errors) {
+    reporter.panic('error loading docs', result.errors);
+  }
+  // reporter.info(result.data);
+  const pages = result.data.allDocsPage.nodes;
+
+  pages.forEach((page) => {
+    actions.createPage({
+      path: page.path,
+      component: require.resolve('./src/templates/docs-page-template.js'),
+      context: {
+        pageID: page.id,
+      },
+    });
   });
 };
