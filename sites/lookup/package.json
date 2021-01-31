@@ -8,5 +8,14 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop"
+  },
+  "dependencies": {
+    "@apollo/react-common": "^3.1.4",
+    "@apollo/react-hooks": "^4.0.0",
+    "gatsby": "^2.31.1",
+    "gatsby-plugin-apollo": "^3.0.2",
+    "graphql-tag": "^2.11.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

@@ -1,13 +1,4 @@
----
-title: Another Page
----
-
-More docs!
-
-```js
 import Code from '../components/code';
-
 export default {
   pre: Code,
 };
-```
